@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "8778052231:AAFIvi8T4FUKQBrUkc45wQbZGB-X0BeGvI4")
-GNGN_API_URL = "https://api.gngn.my/v1/key/info"
+GNGN_API_URL = "https://api.east-api-3.org/v1/key/info"
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -41,7 +41,6 @@ async def check_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         lines = [
             "📊 Баланс ключа",
             "",
-            f"Имя: {data.get('name', 'N/A')}",
             f"Статус: {data.get('status', 'N/A')}",
             f"План: {data.get('plan', 'N/A')}",
             f"Баланс: ${balance_usd:,.2f}",
