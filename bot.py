@@ -32,31 +32,24 @@ async def check_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"Ошибка: {data.get('error')}")
             return
 
-        usage = data.get("usage", {})
-        tokens_used = usage.get("tokens_used", 0)
-        balance_usd = data.get("balance_usd", 0)
-        total_spent = data.get("total_spent_usd", 0)
-        per_model = data.get("per_model", {})
+        credits_balance = data.get("credits_balance", 0)
+        credits_consumed = data.get("credits_consumed", 0)
+        input_tokens = data.get("input_tokens", 0)
+        output_tokens = data.get("output_tokens", 0)
+        balance_usd = credits_balance
+        spent_usd = credits_consumed
 
         lines = [
             "📊 Баланс ключа",
             "",
             f"Статус: {data.get('status', 'N/A')}",
-            f"План: {data.get('plan', 'N/A')}",
+            f"Владелец: {data.get('name', 'N/A')}",
             f"Баланс: ${balance_usd:,.2f}",
-            f"Потрачено всего: ${total_spent:,.2f}",
-            f"Токенов использовано: {tokens_used:,}",
+            f"Потрачено: ${spent_usd:,.4f}",
+            f"Input токенов: {input_tokens:,}",
+            f"Output токенов: {output_tokens:,}",
+            f"Запросов: {data.get('requests_total', 0):,}",
         ]
-
-        if per_model:
-            lines.append("")
-            lines.append("По моделям:")
-            for model, stats in per_model.items():
-                lines.append(
-                    f"• {model}: in {stats.get('input_tokens', 0):,} / "
-                    f"out {stats.get('output_tokens', 0):,} — "
-                    f"${stats.get('spent_usd', 0):,.2f}"
-                )
 
         await update.message.reply_text("\n".join(lines))
     except Exception as e:
